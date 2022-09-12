@@ -4,6 +4,7 @@ import { privateRoutes, publicRoutes, RouteNames } from '../routes';
 
 const AppRouter = () => {
   const auth = true;
+
   return auth ? (
     <Routes>
       {privateRoutes.map(({ path, Component, exact }) => (

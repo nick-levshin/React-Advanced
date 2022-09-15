@@ -1,27 +1,30 @@
 import React, { FC } from 'react';
 import { Layout, Menu, Row } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { RouteNames } from '../routes';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useActions } from '../hooks/useActions';
 
 const Navbar: FC = () => {
-  const navigate = useNavigate();
-  const auth = true;
+  const { isAuth } = useTypedSelector((state) => state.auth);
+  const { logout } = useActions();
+
+  const privateItems = [
+    { label: 'Log Out', key: '1', onClick: () => logout() },
+  ];
+
+  const publicItems = [
+    { label: 'Log In', key: '2', onClick: () => console.log('hi') },
+  ];
 
   return (
     <Layout.Header>
       <Row justify="end">
-        <Menu theme="dark" mode="horizontal" selectable={false}>
-          <div style={{ color: 'white', marginRight: 10 }}>Nick Levshin</div>
-          {auth ? (
-            <Menu.Item onClick={() => navigate(RouteNames.EVENT)} key={1}>
-              Log Out
-            </Menu.Item>
-          ) : (
-            <Menu.Item onClick={() => navigate(RouteNames.LOGIN)} key={2}>
-              Log In
-            </Menu.Item>
-          )}
-        </Menu>
+        <div style={{ color: '#fff', marginRight: 15 }}>Nick Levshin</div>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectable={false}
+          items={isAuth ? privateItems : publicItems}
+        ></Menu>
       </Row>
     </Layout.Header>
   );
